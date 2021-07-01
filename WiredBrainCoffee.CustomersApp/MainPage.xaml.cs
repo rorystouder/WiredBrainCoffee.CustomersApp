@@ -20,14 +20,21 @@ namespace WiredBrainCoffee.CustomersApp
             await messageDialog.ShowAsync();
         }
 
-        private void ButtonDeleteCustomer_Click(object sender, RoutedEventArgs e)
+        private async void ButtonDeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
-
+            var messageDialog = new MessageDialog("Customer Deleted!");
+            await messageDialog.ShowAsync();
         }
 
         private void ButtonMove_Click(object sender, RoutedEventArgs e)
         {
+            int column = Grid.GetColumn(customerListGrid);
 
+            int newColumn = column == 0 ? 2 : 0;
+
+            Grid.SetColumn(customerListGrid, newColumn);
+
+            moveSymbolIcon.Symbol = newColumn == 0 ? Symbol.Forward : Symbol.Back;
         }
     }
 }
