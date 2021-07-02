@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using WiredBrainCoffee.CustomersApp.Controls;
 using WiredBrainCoffee.CustomersApp.DataProvider;
 using WiredBrainCoffee.CustomersApp.Model;
 
@@ -21,6 +22,9 @@ namespace WiredBrainCoffee.CustomersApp
             this.Loaded += MainPage_Loaded;
             App.Current.Suspending += App_SuspendingAsync;
             _customerDataProvider = new CustomerDataProvider();
+            RequestedTheme = App.Current.RequestedTheme == ApplicationTheme.Dark
+                ? ElementTheme.Dark
+                : ElementTheme.Light;
         }
 
 
@@ -69,11 +73,11 @@ namespace WiredBrainCoffee.CustomersApp
             moveSymbolIcon.Symbol = newColumn == 0 ? Symbol.Forward : Symbol.Back;
         }
 
-        private void customerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ButtonToggleTheme_Click(object sender, RoutedEventArgs e)
         {
-            var customer = customerListView.SelectedItem as Customer;
-            customerDetailControl.Customer = customer;
+            this.RequestedTheme = RequestedTheme == ElementTheme.Dark
+                ? ElementTheme.Light
+                : ElementTheme.Dark;
         }
-
     }
 }

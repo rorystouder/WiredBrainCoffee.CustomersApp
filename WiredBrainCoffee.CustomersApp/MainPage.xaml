@@ -4,12 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:controls="using:WiredBrainCoffee.CustomersApp.Controls"
+    xmlns:controls="using:WiredBrainCoffee.CustomersApp.Controls" 
+    xmlns:model="using:WiredBrainCoffee.CustomersApp.Model"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DesignWidth="600"
     d:DesignHeight="400">
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,7 +25,7 @@
         <!--Header-->
         <StackPanel Grid.ColumnSpan="3" Background="#F05A28" Orientation="Horizontal">
             <Image Source="Images/logo.png" Height="90" Margin="5"/>
-            <TextBlock Text="Coffee Customers"
+            <TextBlock Text="{StaticResource applicationTitle}"
                        FontSize="30"
                        FontWeight="ExtraBold"
                        Foreground="White"
@@ -35,11 +36,14 @@
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 25"/>
         </StackPanel>
-        
+
+        <Button Content="Toggle Theme" Grid.ColumnSpan="3" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="10" Click="ButtonToggleTheme_Click"/>
+
         <!-- Customer List -->
         <Grid Grid.Row="1"
               x:Name="customerListGrid"
-              Background="#EEEEEE">
+              Background="{ThemeResource customerListbackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -72,12 +76,12 @@
             <!-- Grid to display list of Customers -->
             <ListView Grid.Row="1" 
                       x:Name="customerListView"
-                      DisplayMemberPath="FirstName"
-                      SelectionChanged="customerListView_SelectionChanged"/>
+                      DisplayMemberPath="FirstName"/>
         </Grid>
         
         <!-- Customer Detail -->
-        <controls:CustomerDetailControl Grid.Row="1" Grid.Column="1"
-                                        x:Name="customerDetailControl"/>
+        <controls:CustomerDetailControl 
+            Grid.Row="1" Grid.Column="1"
+            Customer="{Binding ElementName=customerListView,Path=SelectedItem,Mode=OneWay}"/>
     </Grid>
 </Page>
