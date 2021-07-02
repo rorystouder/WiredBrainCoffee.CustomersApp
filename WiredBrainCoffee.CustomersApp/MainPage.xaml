@@ -74,7 +74,7 @@
             </StackPanel>
             
             <!-- Grid to display list of Customers -->
-            <ListView Grid.Row="1" 
+            <ListView Grid.Row="1" ItemsSource="{Binding Path=Customers,Mode=OneWay}"
                       x:Name="customerListView"
                       DisplayMemberPath="FirstName"/>
         </Grid>

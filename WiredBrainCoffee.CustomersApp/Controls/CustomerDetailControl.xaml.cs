@@ -12,7 +12,7 @@ namespace WiredBrainCoffee.CustomersApp.Controls
 
         public static readonly DependencyProperty CustomerProperty =
             DependencyProperty.Register("Customer", typeof(Customer),
-                typeof(CustomerDetailControl), new PropertyMetadata(null, CustomerChangedCallback));
+                typeof(CustomerDetailControl), new PropertyMetadata(null));
 
         public CustomerDetailControl()
         {
@@ -24,42 +24,5 @@ namespace WiredBrainCoffee.CustomersApp.Controls
             get { return (Customer)GetValue(CustomerProperty); }
             set { SetValue(CustomerProperty, value); }
         }
-
-        private static void CustomerChangedCallback(DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
-        {
-            if(d is CustomerDetailControl customerDetailControl)
-            {
-                var customer = e.NewValue as Customer;
-                customerDetailControl.txtFirstName.Text = customer?.FirstName ?? "";
-                customerDetailControl.txtLastName.Text = customer?.LastName ?? "";
-                customerDetailControl.chkIsDeveloper.IsChecked = customer?.IsDeveloper;
-            }
-            
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateCustomer();
-        }
-
-        private void CheckBox_IsCheckedChanged(object sender, RoutedEventArgs e)
-        {
-            UpdateCustomer();
-        }
-
-        private void UpdateCustomer()
-        {
-            if (Customer != null)
-            {
-                Customer.FirstName = txtFirstName.Text;
-                Customer.LastName = txtLastName.Text;
-                Customer.IsDeveloper = chkIsDeveloper.IsChecked.GetValueOrDefault();
-            }
-        }
-
-
     }
-
-
 }

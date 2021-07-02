@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 using WiredBrainCoffee.CustomersApp.Controls;
 using WiredBrainCoffee.CustomersApp.DataProvider;
 using WiredBrainCoffee.CustomersApp.Model;
+using WiredBrainCoffee.CustomersApp.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -14,14 +15,15 @@ namespace WiredBrainCoffee.CustomersApp
 {
     public sealed partial class MainPage : Page
     {
-        private CustomerDataProvider _customerDataProvider;
+        public MainViewModel ViewModel { get; }
 
         public MainPage()
         {
             this.InitializeComponent();
+            ViewModel = new MainViewModel(new CustomerDataProvider());
+            DataContext = ViewModel;
             this.Loaded += MainPage_Loaded;
             App.Current.Suspending += App_SuspendingAsync;
-            _customerDataProvider = new CustomerDataProvider();
             RequestedTheme = App.Current.RequestedTheme == ApplicationTheme.Dark
                 ? ElementTheme.Dark
                 : ElementTheme.Light;
@@ -30,19 +32,12 @@ namespace WiredBrainCoffee.CustomersApp
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            customerListView.Items.Clear();
-
-            var customers = await _customerDataProvider.LoadCustomersAsync();
-            foreach(var customer in customers)
-            {
-                customerListView.Items.Add(customer);
-            }
+            await ViewModel.LoadAsync();
         }
         private async void App_SuspendingAsync(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            await _customerDataProvider.SaveCustomersAsync(
-                customerListView.Items.OfType<Customer>());
+            await ViewModel.SaveAsync();
             deferral.Complete();
         }
 
